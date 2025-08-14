@@ -1,0 +1,20 @@
+# Benchmarks & Sector ETFs
+# Broad indices proxies
+SPY
+QQQ
+IWM
+DIA
+VT
+VTI
+# Sectors (S&P Select Sector SPDRs)
+XLK
+XLE
+XLF
+XLY
+XLP
+XLI
+XLB
+XLV
+XLU
+XLRE
+XLC
