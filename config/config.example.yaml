@@ -1,0 +1,39 @@
+server:
+  addr: ":8080"
+
+providers:
+  alphaVantage:
+    enabled: false
+    apiKey: ""
+  fmp:
+    enabled: false
+    apiKey: ""
+  finnhub:
+    enabled: false
+    apiKey: ""
+  fred:
+    enabled: false
+    apiKey: ""
+  marketaux:
+    enabled: false
+    apiKey: ""
+
+storage:
+  postgres:
+    enabled: false
+    dsn: "postgres://user:pass@localhost:5432/valuation?sslmode=disable"
+  redis:
+    enabled: false
+    addr: "localhost:6379"
+    db: 0
+
+schedules:
+  pricesCron: "@every 1m"
+  dailyCron: "@every 24h"
+  macroCron: "@every 24h"
+
+universe:
+  tickers:
+    - AAPL
+    - MSFT
+    - GOOGL
