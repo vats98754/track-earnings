@@ -1,0 +1,16 @@
+# build
+/bin/
+/dist/
+/tmp/
+
+# Go
+**/*.test
+**/*.out
+.coverage/
+
+# IDE
+.vscode/
+.idea/
+
+# env
+.env
