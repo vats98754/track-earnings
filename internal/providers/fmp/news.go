@@ -1,7 +1,6 @@
 package fmp
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/url"
 
