@@ -151,13 +151,25 @@ func main() {
 		if analystProv != nil {
 			sch.Every("analyst-hourly", time.Hour, ingest.AnalystJob{Tickers: tickers, Provider: analystProv, Repo: rpo}.Run)
 		}
-		// Transcripts daily
-		if transcriptsProv != nil {
-			sch.Every("transcripts-daily", 24*time.Hour, ingest.TranscriptsJob{Tickers: tickers, Provider: transcriptsProv, Repo: rpo}.Run)
+		// Transcripts (quarterly by default, configurable for earnings calls)
+		transcriptsInterval := 24 * 7 * 12 * time.Hour // ~3 months (quarterly)
+		if s := os.Getenv("TRANSCRIPTS_INTERVAL_HOURS"); s != "" {
+			if v, err := strconv.Atoi(s); err == nil && v > 0 {
+				transcriptsInterval = time.Duration(v) * time.Hour
+			}
 		}
-		// Financials backfill daily (rate-limited inside)
+		if transcriptsProv != nil {
+			sch.Every("transcripts-quarterly", transcriptsInterval, ingest.TranscriptsJob{Tickers: tickers, Provider: transcriptsProv, Repo: rpo}.Run)
+		}
+		// Financials (quarterly by default for earnings reports, configurable)
+		financialsInterval := 24 * 7 * 12 * time.Hour // ~3 months (quarterly)
+		if s := os.Getenv("FINANCIALS_INTERVAL_HOURS"); s != "" {
+			if v, err := strconv.Atoi(s); err == nil && v > 0 {
+				financialsInterval = time.Duration(v) * time.Hour
+			}
+		}
 		if finProv != nil {
-			sch.Every("financials-backfill-daily", 24*time.Hour, ingest.FinancialsHistoryJob{Tickers: tickers, Provider: finProv, Repo: rpo}.Run)
+			sch.Every("financials-quarterly", financialsInterval, ingest.FinancialsHistoryJob{Tickers: tickers, Provider: finProv, Repo: rpo}.Run)
 		}
 		// Sector medians daily
 		sch.Every("sector-medians-daily", 24*time.Hour, ingest.SectorMediansJob{Repo: rpo}.Run)
